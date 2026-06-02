@@ -64,7 +64,8 @@ function calcSugerido(form, canalId) {
   const taxaExtra= parseFloat(canal.taxaExtra) || 0;
   const rebate   = parseFloat(canal.rebate)    || 0;
   if (custo <= 0) return null;
-  const totalPct = (imposto + sga + comissao - rebate) / 100;
+  const MIN_LL = 3.5;
+  const totalPct = (imposto + sga + comissao - rebate + MIN_LL) / 100;
   if (totalPct >= 1) return null;
   const preco = (custo + taxaExtra) / (1 - totalPct);
   return _montaResult(preco, custo, taxaExtra, comissao, imposto, sga, rebate, form, canalId);
@@ -246,7 +247,7 @@ export default function App() {
                   <div style={{ background:C.bg, borderRadius:14, padding:"18px 20px", border:`1px solid ${C.border}`, gridColumn:"1/-1", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:12 }}>
                     <div>
                       <div style={{ fontSize:10, letterSpacing:"0.15em", color:C.textMid, fontWeight:700, marginBottom:6 }}>
-                        {modo==="sugerir"?"PREÇO DE VENDA SUGERIDO":"PREÇO DE VENDA SIMULADO"}
+                        {modo==="sugerir"?"PREÇO SUGERIDO (LL mín. 3,50%)":"PREÇO DE VENDA SIMULADO"}
                       </div>
                       <div style={{ fontSize:36, fontWeight:800, color:"#fff", fontFamily:"'JetBrains Mono',monospace", lineHeight:1 }}>{fmt(res.preco)}</div>
                     </div>
