@@ -91,12 +91,12 @@ function _montaResult(preco, custo, taxaExtra, comissao, imposto, sga, rebate, f
   const valorSGA       = preco * (sga      / 100);
   const valorRebate    = preco * (rebate   / 100);
   const custoTotal     = custo + taxaExtra + valorComissao + valorImposto + valorSGA;
-  // MC = Preço de venda − Custo total (sem rebate)
-  const mc             = preco - custoTotal;
+  // MC = Preço − (Custo + Taxa Extra + Comissão + Imposto) — sem SG&A
+  const custosParaMC   = custo + taxaExtra + valorComissao + valorImposto;
+  const mc             = preco - custosParaMC;
   const mcPct          = preco > 0 ? (mc / preco) * 100 : 0;
-  // LL = Receita real (preço + rebate) − Custo total
-  const receita        = preco + valorRebate;
-  const lucroLiquido   = receita - custoTotal;
+  // LL = MC − SG&A
+  const lucroLiquido   = mc - valorSGA;
   const llPct          = preco > 0 ? (lucroLiquido / preco) * 100 : 0;
   return { preco, custoTotal, mc, mcPct, lucroLiquido, llPct, valorComissao, valorImposto, valorSGA, valorRebate, taxaExtra, custo };
 }
